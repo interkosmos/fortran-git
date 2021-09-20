@@ -1,0 +1,29 @@
+name = "fortran-git"
+version = "0.1.0"
+license = "MIT"
+author = "Philipp Engel"
+maintainer = "@interkosmos"
+copyright = "Copyright (c) 2021, Philipp Engel"
+description = "Fortran 2008 ISO C binding interfaces to libgit2"
+keywords = ["git", "libgit2"]
+
+[build]
+link = "git2"
+
+[library]
+source-dir="src"
+
+[[example]]
+name="discover"
+source-dir="examples/discover"
+main="discover.f90"
+
+[[example]]
+name="init"
+source-dir="examples/init"
+main="init.f90"
+
+[[example]]
+name="open"
+source-dir="examples/open"
+main="open.f90"
