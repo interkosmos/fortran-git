@@ -1,5 +1,5 @@
 # fortran-git
-A collection of Fortran 2008 ISO C binding interfaces to
+A work-in-progress collection of Fortran 2008 ISO C binding interfaces to
 [libgit2](https://github.com/libgit2/libgit2).
 
 ## Build Instructions
@@ -23,7 +23,7 @@ Clone the *fortran-git* repository and build the static library
 *fpm* or GNU/BSD make:
 
 ```
-$ git clone --depth 1 https://github.com/integerkosmos/fortran-git
+$ git clone --depth 1 https://github.com/interkosmos/fortran-git
 $ cd fortran-git/
 $ fpm build
 ```
