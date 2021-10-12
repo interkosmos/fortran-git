@@ -13,7 +13,7 @@ program main
     rc = git_libgit2_init()
     if (rc < 0) call print_last_error()
 
-    print '(a)', 'Opening repository ...'
+    print '(3a)', 'Opening repository "', GIT_DIR, '" ...'
     rc = git_repository_open(repo, GIT_DIR // c_null_char)
     if (rc < 0) call print_last_error()
 
@@ -26,7 +26,6 @@ contains
         type(git_error), pointer      :: error
 
         error => git_error_last()
-        allocate (character(len=c_strlen(error%message)) :: message)
         call c_f_str_ptr(error%message, message)
         write (*, '("Error: ", a)') message
     end subroutine print_last_error

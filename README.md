@@ -14,8 +14,8 @@ $ cmake ..
 $ cmake --build .
 ```
 
-This step creates the shared library `libgit2.so.*` in directory `build/`. Link
-against the library and the header files in `./include/` (if not installed
+This step creates the shared library `libgit2.so.*` in directory `./build/`.
+Link against the library and the header files in `./include/` (if not installed
 globally).
 
 Clone the *fortran-git* repository and build the static library
@@ -33,6 +33,8 @@ With make instead:
 ```
 $ make FC=ifort
 ```
+
+The default compiler is set to `gfortran`.
 
 ## Licence
 MIT

@@ -13,7 +13,8 @@ program main
     print '(a)', 'Init ...'
     rc = git_libgit2_init()
 
-    print '(a)', 'Searching for repository ...'
+    path = ' '
+    print '(3a)', 'Searching for file "', START_FILE, '" ...'
     path_buf = git_buf(c_loc(path), len(path), 0)
     rc = git_repository_discover(path_buf, &
                                  START_FILE // c_null_char, &
@@ -21,7 +22,7 @@ program main
                                  '../../' // c_null_char)
 
     if (rc == 0) then
-        print '(a)', 'Opening repository ...'
+        print '(3a)', 'Opening repository "', trim(path), '" ...'
         rc = git_repository_open(repo, path // c_null_char)
         if (rc < 0) call print_last_error()
     else
@@ -36,7 +37,6 @@ contains
         type(git_error), pointer      :: error
 
         error => git_error_last()
-        allocate (character(len=c_strlen(error%message)) :: message)
         call c_f_str_ptr(error%message, message)
         write (*, '("Error: ", a)') message
     end subroutine print_last_error

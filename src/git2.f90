@@ -19,8 +19,35 @@ module git2
     end interface
 
     public :: c_f_str_ptr
+    public :: c_strlen
     public :: git_error_last
+
+    private :: copy
 contains
+    pure function copy(a)
+        character, intent(in)  :: a(:)
+        character(len=size(a)) :: copy
+        integer(kind=8)        :: i
+
+        do i = 1, size(a)
+            copy(i:i) = a(i)
+        end do
+    end function copy
+
+    subroutine c_f_str_ptr(c_str, f_str)
+        type(c_ptr),                   intent(in)  :: c_str
+        character(len=:), allocatable, intent(out) :: f_str
+        character(kind=c_char), pointer            :: ptrs(:)
+        integer(kind=8)                            :: sz
+
+        if (.not. c_associated(c_str)) return
+        sz = c_strlen(c_str)
+        if (sz <= 0) return
+        call c_f_pointer(c_str, ptrs, [ sz ])
+        allocate (character(len=sz) :: f_str)
+        f_str = copy(ptrs)
+    end subroutine c_f_str_ptr
+
     function git_error_last()
         !! Wrapper function that calls `git_error_last_()` and converts the
         !! returned C pointer to Fortran pointer.
@@ -31,30 +58,4 @@ contains
         if (.not. c_associated(ptr)) return
         call c_f_pointer(ptr, git_error_last)
     end function git_error_last
-
-    subroutine c_f_str_ptr(c_str, f_str)
-        !! Copies a C character array, passed as a C pointer, to a Fortran
-        !! allocatable string.
-        type(c_ptr),                   intent(in)  :: c_str
-        character(len=:), allocatable, intent(out) :: f_str
-        character(kind=c_char, len=1), pointer     :: ptrs(:)
-        integer                                    :: i
-
-        if (.not. c_associated(c_str)) then
-            f_str = ' '
-            return
-        end if
-
-        allocate (character(len=c_strlen(c_str)) :: f_str)
-        call c_f_pointer(c_str, ptrs, [ huge(0) ])
-
-        i = 1
-
-        do while (ptrs(i) /= c_null_char .and. i <= len(f_str))
-            f_str(i:i) = ptrs(i)
-            i = i + 1
-        end do
-
-        if (i < len(f_str)) f_str(i:) = ' '
-    end subroutine c_f_str_ptr
 end module git2
