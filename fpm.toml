@@ -13,6 +13,9 @@ link = "git2"
 [library]
 source-dir="src"
 
+[install]
+library = true
+
 [[example]]
 name="discover"
 source-dir="examples/discover"
